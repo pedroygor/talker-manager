@@ -43,4 +43,25 @@ route.post(
   },
 );
 
+route.put(
+  '/:id', 
+  auth,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  async (request, response) => {
+    const { id } = request.params;
+    const talkers = await getTalkerJson();
+    const talker = talkers.find((talk) => talk.id === Number(id));
+    talker.name = request.body.name;
+    talker.age = request.body.age;
+    talker.rate = request.body.rate;
+    talker.talk = request.body.talk;
+    await createFileTalker(talker);
+    return response.status(200).json(talker);
+  },
+);
+
 module.exports = { route };
