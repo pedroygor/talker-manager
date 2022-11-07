@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const { route: TalkerRoutes } = require('./routes/talkerRoutes');
 
 const app = express();
 app.use(bodyParser.json());
+app.use('/talker', TalkerRoutes);
 
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
@@ -13,5 +15,5 @@ app.get('/', (_request, response) => {
 });
 
 app.listen(PORT, () => {
-  console.log('Inician projeto');
+  console.log('Iniciando projeto');
 });
