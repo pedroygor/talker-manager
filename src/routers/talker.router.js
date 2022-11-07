@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs').promises;
 const { auth } = require('../middlewares/auth');
 const { validateAge } = require('../middlewares/validateAge');
 const { validateName } = require('../middlewares/validateName');
@@ -63,5 +64,13 @@ route.put(
     return response.status(200).json(talker);
   },
 );
+
+route.delete('/:id', auth, async (request, response) => {
+  const { id } = request.params;
+  const talkers = await getTalkerJson();
+  const newTalker = talkers.filter((item) => item.id !== Number(id));
+  await fs.writeFile('src/talker.json', JSON.stringify(newTalker));
+  return response.sendStatus(204);
+});
 
 module.exports = { route };
